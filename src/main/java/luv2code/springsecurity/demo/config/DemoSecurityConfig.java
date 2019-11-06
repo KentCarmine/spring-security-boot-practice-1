@@ -34,6 +34,8 @@ public class DemoSecurityConfig extends WebSecurityConfigurerAdapter  {
                                                             // Spring will handle this routing, you do not need to create
                                                             // a controller request mapping for this.
                                                             // Spring will also check the user id and password automatically
-                .permitAll(); // allow anyone to see the login page without logging in first
+                .permitAll() // allow anyone to see the login page without logging in first
+                .and()
+                .logout().permitAll(); // Expose default /logout URL and permit any to access it
     }
 }

@@ -1,6 +1,7 @@
-<!DOCTYPE html>
+<!doctype html>
+<html lang="en"
+      xmlns:th="https://www.thymeleaf.org">
 
-<html>
     <head>
         <title>luv2code Company Home Page</title>
     </head>
@@ -11,4 +12,10 @@
 
         <p>Welcome to the luv2code Company Home Page</p>
     </body>
+
+
+    <form th:action="@{/logout}" method="POST">
+        <input type="submit" value="Log out" />
+    </form>
+
 </html>
