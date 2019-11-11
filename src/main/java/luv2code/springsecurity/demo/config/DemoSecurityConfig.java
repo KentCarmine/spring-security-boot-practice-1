@@ -11,6 +11,10 @@ import org.springframework.security.core.userdetails.User;
 @EnableWebSecurity
 public class DemoSecurityConfig extends WebSecurityConfigurerAdapter  {
 
+    private static final String ROLE_EMPLOYEE = "EMPLOYEE";
+    private static final String ROLE_MANAGER = "MANAGER";
+    private static final String ROLE_ADMIN = "ADMIN";
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         // add users for in memory authentication
@@ -18,14 +22,16 @@ public class DemoSecurityConfig extends WebSecurityConfigurerAdapter  {
         User.UserBuilder users = User.withDefaultPasswordEncoder();
 
         auth.inMemoryAuthentication()
-                .withUser(users.username("john").password("test123").roles("EMPLOYEE"))
-                .withUser(users.username("mary").password("test123").roles("EMPLOYEE", "MANAGER"))
-                .withUser(users.username("susan").password("test123").roles("EMPLOYEE", "ADMIN"));
+                .withUser(users.username("john").password("test123").roles(ROLE_EMPLOYEE))
+                .withUser(users.username("mary").password("test123").roles(ROLE_EMPLOYEE, ROLE_MANAGER))
+                .withUser(users.username("susan").password("test123").roles(ROLE_EMPLOYEE, ROLE_ADMIN));
     }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests() // Restrict access based on HttpServletRequest
+                .antMatchers("/").hasRole(ROLE_EMPLOYEE)
+                .antMatchers("/leaders/**").hasRole(ROLE_MANAGER)
                 .anyRequest().authenticated() // Any request to the app must be authenticated (ie. Logged in)
                 .and()
                 .formLogin() // Start customizing form login process
