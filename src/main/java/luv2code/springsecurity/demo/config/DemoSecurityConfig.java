@@ -30,9 +30,9 @@ public class DemoSecurityConfig extends WebSecurityConfigurerAdapter  {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests() // Restrict access based on HttpServletRequest
-                .antMatchers("/").hasRole(ROLE_EMPLOYEE)
-                .antMatchers("/leaders/**").hasRole(ROLE_MANAGER)
-                .antMatchers("/systems/**").hasRole(ROLE_ADMIN)
+                .antMatchers("/").hasRole(ROLE_EMPLOYEE) // allow Employees to see '/' page
+                .antMatchers("/leaders/**").hasRole(ROLE_MANAGER) // allow Managers to see '/leaders' pages
+                .antMatchers("/systems/**").hasRole(ROLE_ADMIN) // allow Admins to see '/systems' pages
                 .anyRequest().authenticated() // Any request to the app must be authenticated (ie. Logged in)
                 .and()
                 .formLogin() // Start customizing form login process
@@ -43,6 +43,8 @@ public class DemoSecurityConfig extends WebSecurityConfigurerAdapter  {
                                                             // Spring will also check the user id and password automatically
                 .permitAll() // allow anyone to see the login page without logging in first
                 .and()
-                .logout().permitAll(); // Expose default /logout URL and permit any to access it
+                .logout().permitAll() // Expose default /logout URL and permit any to access it
+                .and()
+                .exceptionHandling().accessDeniedPage("/access-denied"); // Use custom page for 403 forbidden errors
     }
 }
