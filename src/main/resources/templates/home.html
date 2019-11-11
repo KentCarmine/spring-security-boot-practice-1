@@ -20,13 +20,13 @@
 
         <hr>
 
-        <div>
+        <div sec:authorize="hasRole('ROLE_MANAGER')">
             <p>
                 <a th:href="@{/leaders}">Leadership meeting</a> (Only for Managers)
             </p>
         </div>
 
-        <div>
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
             <p>
                 <a th:href="@{/systems}">IT Systems meeting</a> (Only for Admins)
             </p>
