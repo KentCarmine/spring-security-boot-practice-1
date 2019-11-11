@@ -32,6 +32,7 @@ public class DemoSecurityConfig extends WebSecurityConfigurerAdapter  {
         httpSecurity.authorizeRequests() // Restrict access based on HttpServletRequest
                 .antMatchers("/").hasRole(ROLE_EMPLOYEE)
                 .antMatchers("/leaders/**").hasRole(ROLE_MANAGER)
+                .antMatchers("/systems/**").hasRole(ROLE_ADMIN)
                 .anyRequest().authenticated() // Any request to the app must be authenticated (ie. Logged in)
                 .and()
                 .formLogin() // Start customizing form login process
