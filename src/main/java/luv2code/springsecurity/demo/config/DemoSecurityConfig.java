@@ -33,15 +33,14 @@ public class DemoSecurityConfig extends WebSecurityConfigurerAdapter  {
                 .antMatchers("/").hasRole(ROLE_EMPLOYEE) // allow Employees to see '/' page
                 .antMatchers("/leaders/**").hasRole(ROLE_MANAGER) // allow Managers to see '/leaders' pages
                 .antMatchers("/systems/**").hasRole(ROLE_ADMIN) // allow Admins to see '/systems' pages
-                .anyRequest().authenticated() // Any request to the app must be authenticated (ie. Logged in)
                 .and()
                 .formLogin() // Start customizing form login process
-                .loginPage("/showMyLoginPage") // Page that shows custom login form
-                .loginProcessingUrl("/authenticateTheUser") // Page that processes custom login form submission
+                    .loginPage("/showMyLoginPage") // Page that shows custom login form
+                    .loginProcessingUrl("/authenticateTheUser") // Page that processes custom login form submission
                                                             // Spring will handle this routing, you do not need to create
                                                             // a controller request mapping for this.
                                                             // Spring will also check the user id and password automatically
-                .permitAll() // allow anyone to see the login page without logging in first
+                    .permitAll() // allow anyone to see the login page without logging in first
                 .and()
                 .logout().permitAll() // Expose default /logout URL and permit any to access it
                 .and()
