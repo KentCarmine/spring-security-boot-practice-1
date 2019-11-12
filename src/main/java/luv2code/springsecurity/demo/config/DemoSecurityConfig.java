@@ -1,11 +1,13 @@
 package luv2code.springsecurity.demo.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
@@ -15,16 +17,24 @@ public class DemoSecurityConfig extends WebSecurityConfigurerAdapter  {
     private static final String ROLE_MANAGER = "MANAGER";
     private static final String ROLE_ADMIN = "ADMIN";
 
+    @Autowired
+    private DataSource securityDataSource;
+
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        // add users for in memory authentication
+//
+//        User.UserBuilder users = User.withDefaultPasswordEncoder();
+//
+//        auth.inMemoryAuthentication()
+//                .withUser(users.username("john").password("test123").roles(ROLE_EMPLOYEE))
+//                .withUser(users.username("mary").password("test123").roles(ROLE_EMPLOYEE, ROLE_MANAGER))
+//                .withUser(users.username("susan").password("test123").roles(ROLE_EMPLOYEE, ROLE_ADMIN));
+//    }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // add users for in memory authentication
-
-        User.UserBuilder users = User.withDefaultPasswordEncoder();
-
-        auth.inMemoryAuthentication()
-                .withUser(users.username("john").password("test123").roles(ROLE_EMPLOYEE))
-                .withUser(users.username("mary").password("test123").roles(ROLE_EMPLOYEE, ROLE_MANAGER))
-                .withUser(users.username("susan").password("test123").roles(ROLE_EMPLOYEE, ROLE_ADMIN));
+        auth.jdbcAuthentication().dataSource(securityDataSource); // wire up data source to use for spring security
     }
 
     @Override
@@ -46,4 +56,13 @@ public class DemoSecurityConfig extends WebSecurityConfigurerAdapter  {
                 .and()
                 .exceptionHandling().accessDeniedPage("/access-denied"); // Use custom page for 403 forbidden errors
     }
+
+    // For h2 console setup testing only, DO NOT USE IN PRODUCTION!!!
+//    @Override
+//    protected void configure(HttpSecurity httpSecurity) throws Exception {
+//        httpSecurity.authorizeRequests()
+//                .antMatchers("**").permitAll();
+//        httpSecurity.csrf().disable();
+//        httpSecurity.headers().frameOptions().disable();
+//    }
 }
