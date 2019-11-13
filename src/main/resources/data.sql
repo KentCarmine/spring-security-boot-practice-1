@@ -1,6 +1,6 @@
 CREATE TABLE users (
     username varchar(50) NOT NULL,
-    password varchar(50) NOT NULL,
+    password varchar(68) NOT NULL,
     enabled tinyint(1) NOT NULL,
 
     PRIMARY KEY (username)
@@ -8,9 +8,9 @@ CREATE TABLE users (
 
 INSERT INTO users (username, password, enabled)
 VALUES
-('john', '{noop}test123', 1),
-('mary', '{noop}test123', 1),
-('susan', '{noop}test123', 1);
+('john', '{bcrypt}$2a$10$JbfY3QLDpnQlMtP2Wk9aaum586jPvF9rBQXiHZCmxnPjD4Ol.30VS', 1),
+('mary', '{bcrypt}$2a$10$sY82/i3ycggOoKg573KjFe84eNcW/AwnoFxGchiKbSLSxEP4yNCmO', 1),
+('susan', '{bcrypt}$2a$10$uAfdRP20mFsdt5g/nQkNSOBfCS6yzNdf6zRnVwzBdCj7BAeUVxS.W', 1);
 
 CREATE TABLE authorities (
     username varchar(50) NOT NULL,
